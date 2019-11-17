@@ -11,10 +11,15 @@ def extract_file_contents():
     # provide the exact file path from your system.
     with open('/Users/namitamaharanwar/Documents/sl051bai_mod1.csv', newline='') as data_file:
         reader = csv.DictReader(data_file)
-        for row in reader:
-            list_of_rows.append(row)
-
+        try:
+            for row in reader:
+                list_of_rows.append(row)
+        except Exception as e:
+            pass
     return list_of_rows
+
+
+list_of_rows = extract_file_contents()
 
 
 def search_schools(search_key):
@@ -23,11 +28,12 @@ def search_schools(search_key):
     :param search_key: input school name
     :return: prints the matching results with ranks
     """
-    list_of_rows = extract_file_contents()
+    # list_of_rows = extract_file_contents()
     search_results_with_ranking = []
     rank = 0
 
     sub_strings = Tokenizer.sub_string_generator(search_key.lower())
+    start_ts = datetime.datetime.now()
 
     for row in list_of_rows:
 
@@ -41,7 +47,10 @@ def search_schools(search_key):
                 rank = rank + 1
                 search_results_with_ranking.append([rank, row.get("LCITY05"), row.get("LSTATE05"), row.get("SCHNAM05")])
 
-    print("Results for '%s'" % search_key)
+    end_ts = datetime.datetime.now()
+    time_taken = end_ts-start_ts
+
+    print("Results for '%s' (search took %s)" % (search_key, time_taken))
     for row in search_results_with_ranking:
         print("%s. %s" % (row[0], row[3]))
         print("%s, %s" % (row[1], row[2]))
@@ -126,8 +135,4 @@ class Cleaner:
 
 
 if __name__ == "__main__":
-    x = datetime.datetime.now()
     search_schools("jefferson belleville".lower())
-    y = datetime.datetime.now()
-    z = y-x
-    print(z)

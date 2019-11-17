@@ -10,9 +10,11 @@ def extract_file_contents():
     # provide the exact file path from your system.
     with open('/Users/namitamaharanwar/Documents/sl051bai_mod1.csv', newline='') as data_file:
         reader = csv.DictReader(data_file)
-        for row in reader:
-            list_of_rows.append(row)
-
+        try:
+            for row in reader:
+                list_of_rows.append(row)
+        except Exception as exp:
+            pass
     return list_of_rows
 
 
